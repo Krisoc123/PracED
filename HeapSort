@@ -1,0 +1,77 @@
+package heapsort;
+
+import java.util.Comparator;
+
+public class HeapSort {
+
+    public static <E> void sort(E[] elements, Comparator<? super E> cmp) {
+        new BinaryHeap<>(elements, cmp).heapSort();
+    }
+
+    public static <E extends Comparable<? super E>> void sort(E[] elements) {
+        sort(elements, Comparator.naturalOrder());
+    }
+
+    static class BinaryHeap<E> {
+
+        private final E[] elements;
+        private final Comparator<? super E> comparator;
+        private int heapSize;
+
+        BinaryHeap(E[] elements, Comparator<? super E> comparator) {
+            this.elements = elements;
+            this.comparator = comparator;
+            this.heapSize = elements.length;
+            buildMaxHeap();
+        }
+
+        private void buildMaxHeap() {
+            for (int i = parentIndex(heapSize - 1); i >= 0; i--) {
+                heapifyDown(i);
+            }
+        }
+
+        void heapSort() {
+            while (heapSize > 1) {
+                swap(0, heapSize - 1); // Coloca el máximo al final
+                heapSize--;            // Reduce el tamaño del heap
+                heapifyDown(0);        // Restaura la propiedad de max-heap
+            }
+        }
+
+        void swap(int i, int j) { // Método público para permitir pruebas
+            E temp = elements[i];
+            elements[i] = elements[j];
+            elements[j] = temp;
+        }
+
+        private void heapifyDown(int index) {
+            int largest = index;
+            int left = leftIndex(index);
+            int right = rightIndex(index);
+
+            if (left < heapSize && comparator.compare(elements[left], elements[largest]) > 0) {
+                largest = left;
+            }
+            if (right < heapSize && comparator.compare(elements[right], elements[largest]) > 0) {
+                largest = right;
+            }
+            if (largest != index) {
+                swap(index, largest);
+                heapifyDown(largest);
+            }
+        }
+
+        private int parentIndex(int index) {
+            return (index - 1) / 2;
+        }
+
+        private int leftIndex(int index) {
+            return 2 * index + 1;
+        }
+
+        private int rightIndex(int index) {
+            return 2 * index + 2;
+        }
+    }
+}
