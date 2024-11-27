@@ -1,5 +1,10 @@
-package heapsort;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+
+import heapsort.HeapSort;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -121,10 +126,10 @@ class HeapSortTest {
     // Test del método swap
     @Test
     void test_swap() {
-        Integer[] array = {1, 2, 3};
-        var heap = new HeapSort.BinaryHeap<>(array, Comparator.naturalOrder());
+        Integer[] array = {1, 2, 3}; // Estado inicial
+        var heap = new HeapSort.BinaryHeap<>(array, Comparator.naturalOrder(), false); // No construye el heap
         heap.swap(0, 2); // Intercambia el primer y último elemento
         System.out.println("Array después del swap: " + Arrays.toString(array)); // Diagnóstico
-        assertArrayEquals(new Integer[]{3, 2, 1}, array);
+        assertArrayEquals(new Integer[]{3, 2, 1}, array, "El intercambio no se realizó correctamente");
     }
 }
