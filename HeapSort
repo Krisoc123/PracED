@@ -12,20 +12,28 @@ public class HeapSort {
         sort(elements, Comparator.naturalOrder());
     }
 
-    static class BinaryHeap<E> {
+    public static class BinaryHeap<E> {
 
         private final E[] elements;
         private final Comparator<? super E> comparator;
         private int heapSize;
 
+        // Constructor principal
         BinaryHeap(E[] elements, Comparator<? super E> comparator) {
-            this.elements = elements;
-            this.comparator = comparator;
-            this.heapSize = elements.length;
-            buildMaxHeap();
+            this(elements, comparator, true); // Por defecto construye el heap
         }
 
-        private void buildMaxHeap() {
+        // Constructor adicional para controlar la construcción del heap
+        public BinaryHeap(E[] elements, Comparator<? super E> comparator, boolean buildHeap) {
+            this.elements = elements; // Referencia directa al arreglo
+            this.comparator = comparator;
+            this.heapSize = elements.length;
+            if (buildHeap) {
+                buildMaxHeap();
+            }
+        }
+
+        public void buildMaxHeap() {
             for (int i = parentIndex(heapSize - 1); i >= 0; i--) {
                 heapifyDown(i);
             }
@@ -39,13 +47,13 @@ public class HeapSort {
             }
         }
 
-        void swap(int i, int j) { // Método público para permitir pruebas
+        public void swap(int i, int j) { // Asegura visibilidad pública para pruebas
             E temp = elements[i];
             elements[i] = elements[j];
             elements[j] = temp;
         }
 
-        private void heapifyDown(int index) {
+        public void heapifyDown(int index) {
             int largest = index;
             int left = leftIndex(index);
             int right = rightIndex(index);
@@ -75,3 +83,4 @@ public class HeapSort {
         }
     }
 }
+
